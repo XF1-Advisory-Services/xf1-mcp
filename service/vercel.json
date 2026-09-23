@@ -1,0 +1,7 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "installCommand": "pnpm install --frozen-lockfile",
+  "functions": { "api/mcp.js": { "maxDuration": 30 } },
+  "git": { "deploymentEnabled": false }
+}

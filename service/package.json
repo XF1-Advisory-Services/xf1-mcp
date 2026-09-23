@@ -1,0 +1,17 @@
+{
+  "name": "xf1-mcp",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": "24.x" },
+  "packageManager": "pnpm@11.19.0",
+  "scripts": {
+    "start": "node local-server.js",
+    "test": "node --test test/*.test.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/server": "2.1.0",
+    "mcp-handler": "2.2.0",
+    "zod": "4.6.5"
+  }
+}
