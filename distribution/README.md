@@ -1,19 +1,19 @@
 # XF1 local execution and MCP setup
 
-Status: implemented locally; no published package or deployed XF1 endpoint yet. The examples below become usable after Vavrinec explicitly approves publication and deployment. The Vercel project will be separate from the test dashboard.
+Release [1.2.0](https://github.com/XF1-Advisory-Services/xf1-mcp/releases/tag/v1.2.0) is published. The public MCP endpoint is `https://xf1-mcp.vercel.app/api/mcp`, deployed in the separate `xf1-mcp` Vercel project. The test dashboard remains a separate project.
 
 ## What colleagues need once
 
 Use a Windows laptop with PowerShell 7 or later, usable desktop Microsoft Excel with `Formula2`, and Codex with permission to run local PowerShell. No Python, Node.js, Git, GitHub account or Vercel account is needed on the colleague's laptop for workbook creation. Normal organization execution policies still apply; this setup does not change them or bypass script restrictions. Install missing prerequisites through the organization's approved software process.
 
-After the actual production URL has been confirmed, connect Codex:
+Connect Codex:
 
 ```powershell
-codex mcp add xf1 --url 'https://ACTUAL-XF1-HOST/api/mcp'
+codex mcp add xf1 --url 'https://xf1-mcp.vercel.app/api/mcp'
 codex mcp list
 ```
 
-Replace `ACTUAL-XF1-HOST`; it is deliberately not a claimed live hostname. There are no login/token parameters. This command follows [official Codex MCP setup guidance](https://developers.openai.com/learn/docs-mcp); it was also checked against the installed `codex mcp add --help`. In an app-only setup, add the same Streamable HTTP URL through the client's MCP configuration. Client-specific UI setup has not yet been tested against the future live endpoint.
+There are no login/token parameters. This command follows [official Codex MCP setup guidance](https://developers.openai.com/learn/docs-mcp); it was also checked against the installed `codex mcp add --help`. In an app-only setup, add the same Streamable HTTP URL through the client's MCP configuration. Client-specific UI setup has not been separately tested; the downloaded bridge has been checked against the live public endpoint.
 
 Ask Codex to call `get_current_release`, download its `release.bridge.url`, and verify the file's SHA-256 against `release.bridge.sha256` **before running it**. Save it in a versioned local folder, for example `%LOCALAPPDATA%\XF1\bridge\1.0.0\Invoke-XF1Build.ps1`. This initial script is the execution bridge: adding a remote MCP URL alone does not grant the server access to local Excel. Keep its path available to the local agent. If a later approved release requires a different bridge version or hash, download and verify that bridge before another build; do not overwrite a bridge being used by an active build.
 
@@ -23,7 +23,7 @@ Ask Codex to create a new XF1 workbook and specify the start date, last actual d
 
 ```powershell
 pwsh -NoProfile -File 'C:\path\to\Invoke-XF1Build.ps1' `
-  -McpUrl 'https://ACTUAL-XF1-HOST/api/mcp' `
+  -McpUrl 'https://xf1-mcp.vercel.app/api/mcp' `
   -StartDate '2025-01-01' -LastActualDate '2026-08-31' `
   -FinancialYearEndMonth 12 -Currency 'USD' -Months 48 `
   -OutputPath 'C:\Models\My-XF1-Model.xlsx'

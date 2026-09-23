@@ -1,6 +1,6 @@
 # Explicit release and deployment procedure
 
-Only Vavrinec's explicit instruction authorizes preparation/update/publication of a release. The current instruction authorizes local implementation, testing and a reviewable candidate; publication and deployment remain pending.
+Only Vavrinec's explicit instruction authorizes preparation/update/publication of a release. Release 1.2.0 publication and the separate Vercel deployment were explicitly authorized on 2026-09-23. Future releases still require a new explicit instruction.
 
 ## Local preparation
 
@@ -26,7 +26,7 @@ These are manual release actions, not installed automation. Selecting a differen
 
 ## Vercel target and settings
 
-| Setting | Proposed value |
+| Setting | Value |
 |---|---|
 | Team | `xf-1-advisory` (`team_2Nem4Au9ovP0kTW4AY33IKeA`) |
 | Project | Separate new project `xf1-mcp` |
@@ -34,13 +34,14 @@ These are manual release actions, not installed automation. Selecting a differen
 | Project root | `service/` |
 | Runtime | Node.js 24 |
 | Framework preset | Other (no framework) |
-| Install | `pnpm install --frozen-lockfile` |
+| Install | `npx --yes pnpm@11.19.0 install --frozen-lockfile` |
+| Package-manager discovery | Root and service `package.json` pin pnpm 11.19.0; Vercel `ENABLE_EXPERIMENTAL_COREPACK=1` |
 | MCP route | `/api/mcp` using the actual production hostname |
 | Function duration | 30 seconds |
 | Authentication | None; production MCP must be publicly reachable |
 | Runtime secrets / database | None required |
 | Automatic Git deployments | Disabled in `service/vercel.json` |
 
-Only the new project's settings are involved; do not change the dashboard project's environment, domains, build configuration or deployment protection. Team billing and limits are shared. No project has been created or linked by the local implementation work.
+Only the new project's settings are involved; do not change the dashboard project's environment, domains, build configuration or deployment protection. Team billing and limits are shared. The dedicated `xf1-mcp` project was created during the authorized publication work.
 
-The service uses Vercel's documented [Web Request function interface](https://vercel.com/docs/functions/functions-api-reference). Automatic Git deployments are disabled using [git.deploymentEnabled](https://vercel.com/docs/project-configuration/git-configuration). These local settings have not yet been verified in an actual Vercel deployment; that verification belongs to the explicitly authorized deployment step.
+The service uses Vercel's documented [Web Request function interface](https://vercel.com/docs/functions/functions-api-reference). Automatic Git deployments are disabled using [git.deploymentEnabled](https://vercel.com/docs/project-configuration/git-configuration). Use a manual deployment from the reviewed commit. The repository-level package-manager pin supports [Vercel Corepack discovery](https://vercel.com/docs/package-managers) when the service is in a subdirectory.
