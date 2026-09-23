@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 2,
+  "templateId": "xf1-base-six-sheet",
+  "version": "1.2.0-dev.3",
+  "status": "development",
+  "runner": "runner/New-XF1Workbook.ps1",
+  "requirements": {
+    "os": "Windows",
+    "excel": "Desktop Microsoft Excel with Formula2 support",
+    "powershell": "7.0 or later"
+  },
+  "testedClient": "Codex",
+  "otherClients": "Claude compatibility expected, not guaranteed or tested",
+  "sheetOrder": [
+    "Controls",
+    "Monthly",
+    "Quarterly",
+    "Annual",
+    "Input_sheet",
+    "Checks"
+  ],
+  "assets": [
+    {
+      "path": "docs/annual.md",
+      "sha256": "6FF0B8C4EBB55806D2647C5F2C3BA13A26F745FC68AE8360ABBC33C2E454B2BE"
+    },
+    {
+      "path": "docs/checks.md",
+      "sha256": "073061F206DDE1A03EF4644383EEE6AA59FBED9F28D415C2BDFB992BDEF3B088"
+    },
+    {
+      "path": "docs/controls.md",
+      "sha256": "204F8475C50C66704608447A528647709C7BFC94E12A8264B37F316F1DDF7922"
+    },
+    {
+      "path": "docs/inputs.md",
+      "sha256": "F760F4FA330243A913D65832195C46B7CEC51C6D835497D69B903D669BF1B175"
+    },
+    {
+      "path": "docs/monthly.md",
+      "sha256": "56175F4101941E1E01C1AAE6D6DB2FC1E25ACEA85020D97EE7E9BD96D88E0D81"
+    },
+    {
+      "path": "docs/quarterly.md",
+      "sha256": "BDB20DF7C6C14B857154AB631070D403D967A1E6221263B29C5C2E87D55C81B1"
+    },
+    {
+      "path": "docs/review-notes.md",
+      "sha256": "766D201B9C4A7FFDE88D9B0C88B8DE2F7E0198EA6F4AA948210598406A6E8BD8"
+    },
+    {
+      "path": "docs/runner.md",
+      "sha256": "600645980FCDDE438FA08AD165044B291D3D257A6B5970F33ADD65EF78EBFFF1"
+    },
+    {
+      "path": "docs/shared-guidance.md",
+      "sha256": "3BA01FE706DC77AC15B7411B05B591B2FC3CF91D99E366BD3A9F2066480FB4DE"
+    },
+    {
+      "path": "runner/Layout.ps1",
+      "sha256": "C2EA50FB7B22E49D99E645E54BE2D010F10EE1C4EE5B38678B08138FB00B63AB"
+    },
+    {
+      "path": "runner/New-XF1Workbook.ps1",
+      "sha256": "46D8C4AE9485C35B8A3E495E06A2BEA998D26F4FBAA88F592634A7DDA8CA3571"
+    },
+    {
+      "path": "runner/Workbook.ps1",
+      "sha256": "56154B908717025D2F149BC272E46BA1FA01944D1B69D55B8227A329FE177578"
+    }
+  ],
+  "generation": "from-scratch"
+}

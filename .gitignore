@@ -1,0 +1,9 @@
+.build/
+templates/
+**/node_modules/
+**/.vercel/
+**/.env*
+*.xlsx
+*.xlsm
+*.map.json
+*.build.json
