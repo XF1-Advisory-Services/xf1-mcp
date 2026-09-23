@@ -1,5 +1,7 @@
 # XF1 Excel templates
 
+Published release: [1.2.0](https://github.com/XF1-Advisory-Services/xf1-mcp/releases/tag/v1.2.0). Public MCP endpoint: `https://xf1-mcp.vercel.app/api/mcp`. See [colleague setup](distribution/README.md).
+
 One project contains the template specifications, local builder, and MCP distribution implementation. It creates workbooks from scratch; existing Excel files are outputs, not dependencies. Nothing is automatically published when local files change.
 
 | Location | Purpose |
