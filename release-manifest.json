@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "templateId": "xf1-base-six-sheet",
-  "version": "1.2.0-dev.3",
+  "version": "1.2.1-dev.1",
   "status": "development",
   "runner": "runner/New-XF1Workbook.ps1",
   "requirements": {
@@ -66,7 +66,7 @@
     },
     {
       "path": "runner/Workbook.ps1",
-      "sha256": "56154B908717025D2F149BC272E46BA1FA01944D1B69D55B8227A329FE177578"
+      "sha256": "3A8DF3DC8FDDFE84BDB15BCB3190D8BFA0741B0B5807737C4B465D8B430D5C30"
     }
   ],
   "generation": "from-scratch"
