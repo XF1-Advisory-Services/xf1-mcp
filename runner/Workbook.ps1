@@ -7,6 +7,9 @@ function Get-XF1Column([int]$Number) {
 function Assert-XF1Equal($Actual,$Expected,[string]$Label) {
     if ($Actual -cne $Expected) { throw "$Label expected [$Expected], got [$Actual]" }
 }
+function Assert-XF1FontName($Actual,[string]$Label) {
+    if ($Actual -ine 'Verdana') { throw "$Label expected [Verdana], got [$Actual]" }
+}
 function Assert-XF1Base($Book,$Map,$Manifest) {
     $names = @($Book.Worksheets | ForEach-Object { $_.Name })
     Assert-XF1Equal ($names -join '|') ($Manifest.sheetOrder -join '|') 'Sheet order'
@@ -184,7 +187,7 @@ function Test-XF1Workbook($Book,$Excel,$Config,$Map) {
         Assert-XF1Equal $s.Range('C2').Formula2 '=model.check.message' "$name status formula"
         foreach ($address in @('C2','Z1')) {
             $cell=$s.Range($address)
-            Assert-XF1Equal $cell.Font.Name 'Verdana' "$name header font"
+            Assert-XF1FontName $cell.Font.Name "$name header font"
             Assert-XF1Equal $cell.Font.Size 10 "$name header size"
             Assert-XF1Equal $cell.Font.Color 16777215 "$name header text colour"
             Assert-XF1Equal $cell.Interior.Color 0 "$name header fill"
