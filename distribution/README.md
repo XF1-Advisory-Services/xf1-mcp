@@ -1,6 +1,6 @@
 # XF1 local execution and MCP setup
 
-Release [1.2.0](https://github.com/XF1-Advisory-Services/xf1-mcp/releases/tag/v1.2.0) is published. The public MCP endpoint is `https://xf1-mcp.vercel.app/api/mcp`, deployed in the separate `xf1-mcp` Vercel project. The test dashboard remains a separate project.
+Release [1.2.1](https://github.com/XF1-Advisory-Services/xf1-mcp/releases/tag/v1.2.1) is published. The public MCP endpoint is `https://xf1-mcp.vercel.app/api/mcp`, deployed in the separate `xf1-mcp` Vercel project. The test dashboard remains a separate project.
 
 ## What colleagues need once
 
