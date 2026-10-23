@@ -1,5 +1,7 @@
 # Runner verification
 
+Fresh-request and MCP boundary tests: `node --test service/test/request.test.js`. These cover partial/complete requests, a fresh second request, numbered clarification mapping, explicit reuse, existing-workbook edits, and the bridge's local validation before network/Excel. Run `node --test service/test/distribution.test.js` for release/cache compatibility; set `XF1_TEST_EXCEL=1` to also exercise the new request file through native Excel. These tests validate deterministic code and declared provenance, not a language model's interpretation of arbitrary conversation text.
+
 Latest completed run: [development candidate verification](VALIDATION.md).
 
 Run from the project root using PowerShell 7 with desktop Excel available:

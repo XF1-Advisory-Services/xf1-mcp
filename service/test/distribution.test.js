@@ -77,13 +77,12 @@ test('XF1 distribution contract and local bridge', async (t) => {
         const value = clone(approved); mutate(value); assert.throws(() => validateRelease(value));
       }
     });
-    await check('production MCP initializes and lists exactly the release tool', async () => {
+    await check('production MCP initializes and lists request preflight and release tools', async () => {
       const init = await unapprovedHandler(new Request(endpoint, { method: 'POST', headers: { 'content-type': 'application/json', accept: 'application/json, text/event-stream' }, body: JSON.stringify({ jsonrpc: '2.0', id: 1, method: 'initialize', params: { protocolVersion: '2025-06-18', capabilities: {}, clientInfo: { name: 'test', version: '1' } } }) }));
       assert.equal(init.status, 200);
       assert.match(await init.text(), /xf1-mcp/);
       const listed = await rpc(unapprovedHandler, 'tools/list');
-      assert.equal(listed.result.tools.length, 1);
-      assert.equal(listed.result.tools[0].name, 'get_current_release');
+      assert.deepEqual(listed.result.tools.map(tool => tool.name).sort(), ['check_workbook_request', 'get_current_release']);
     });
     await check('production endpoint refuses workbook approval until explicitly configured', async () => {
       const data = await rpc(unapprovedHandler, 'tools/call', { name: 'get_current_release', arguments: {} });
@@ -176,7 +175,11 @@ test('XF1 distribution contract and local bridge', async (t) => {
     if (process.env.XF1_TEST_EXCEL === '1') {
       await check('native Excel end-to-end: MCP, verified cache, existing runner, workbook and sidecars', async () => {
         const output = path.join(work, 'native-build.xlsx');
-        const result = await invoke(['-StartDate', '2025-01-01', '-LastActualDate', '2026-08-31', '-FinancialYearEndMonth', '12', '-Currency', 'USD', '-Months', '48', '-OutputPath', output]);
+        const requestFile = path.join(work, 'native-request.json');
+        const requestId = 'distribution-native-test';
+        const inputs = Object.fromEntries(Object.entries({ StartDate: '2025-01-01', LastActualDate: '2026-08-31', FinancialYearEndMonth: 12, Currency: 'USD', Months: 48, OutputPath: output }).map(([field, value]) => [field, { value, requestId, source: 'current_request' }]));
+        await writeFile(requestFile, JSON.stringify({ schemaVersion: 1, requestId, inputs }));
+        const result = await invoke(['-RequestPath', requestFile]);
         assert.equal(result.downloaded, false);
         assert.equal(result.build.releaseVersion, '1.2.0');
         assert.equal(result.build.generation, 'from-scratch');
@@ -187,7 +190,7 @@ test('XF1 distribution contract and local bridge', async (t) => {
         const map = await readJson(output.replace('.xlsx', '.map.json'));
         assert.equal(map.configuration.months, 48);
         assert.equal((await readJson(output.replace('.xlsx', '.build.json'))).releaseVersion, '1.2.0');
-        await assert.rejects(invoke(['-StartDate', '2025-01-01', '-LastActualDate', '2026-08-31', '-FinancialYearEndMonth', '12', '-Currency', 'USD', '-OutputPath', output]), /Output already exists/);
+        await assert.rejects(invoke(['-RequestPath', requestFile]), /Output already exists/);
       });
     }
     await check('connection failure stops even with a verified cache', async () => {

@@ -30,7 +30,7 @@
     },
     {
       "path": "docs/controls.md",
-      "sha256": "204F8475C50C66704608447A528647709C7BFC94E12A8264B37F316F1DDF7922"
+      "sha256": "EC5F9BF265AF2465E0010281FC1632434C486DF7339DE2C6EBEE141E9FF5CA7E"
     },
     {
       "path": "docs/inputs.md",
@@ -39,6 +39,10 @@
     {
       "path": "docs/monthly.md",
       "sha256": "56175F4101941E1E01C1AAE6D6DB2FC1E25ACEA85020D97EE7E9BD96D88E0D81"
+    },
+    {
+      "path": "docs/new-workbook-request.md",
+      "sha256": "635BE39A29D0047A7FAEA207EC38F45EC272AC80345E7F8DB8AFE1BC76751654"
     },
     {
       "path": "docs/quarterly.md",
@@ -50,11 +54,11 @@
     },
     {
       "path": "docs/runner.md",
-      "sha256": "600645980FCDDE438FA08AD165044B291D3D257A6B5970F33ADD65EF78EBFFF1"
+      "sha256": "FE7B5DB5B711F6989364047634AD5577D984F7194F0460085CD6B20C042D869C"
     },
     {
       "path": "docs/shared-guidance.md",
-      "sha256": "52D58F1639111A41498861F8A8E86DBC454A911502FED4A2BBB5BFB6232B418A"
+      "sha256": "B32A274BCD46D5564EC95DAD5CD3D7572946238C5ED0F2174EF85C99A6FBEBF8"
     },
     {
       "path": "runner/Layout.ps1",

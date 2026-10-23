@@ -1,5 +1,7 @@
 # XF1 local execution and MCP setup
 
+The request-file workflow below is the tested source for pending release 1.2.3 / bridge 1.1.0. It becomes available through MCP only after publication and deployment; the current published selection is recorded below. Always use the bridge version and hash returned by the live service.
+
 Release [1.2.2](https://github.com/XF1-Advisory-Services/xf1-mcp/releases/tag/v1.2.2) is published. The public MCP endpoint is `https://xf1-mcp.vercel.app/api/mcp`, deployed in the separate `xf1-mcp` Vercel project. The test dashboard remains a separate project.
 
 ## What colleagues need once
@@ -19,14 +21,12 @@ Ask Codex to call `get_current_release`, download its `release.bridge.url`, and 
 
 ## Each new workbook
 
-Ask Codex to create a new XF1 workbook and specify the start date, last actual date, financial year-end month, currency and output path. The horizon defaults to 48 months. The bridge performs a fresh MCP approval lookup and then runs the tested builder locally:
+For EVERY new XF1 workbook, follow [fresh request collection](../docs/new-workbook-request.md). Start with empty inputs and a fresh request ID, including in the same thread. Collect start date, last actual date, financial year-end month, currency, number of months and full output path explicitly for this request. Ask ALL missing inputs together as numbered questions; bind numbered replies to that pending request. Reuse earlier values only when the user explicitly asks. Ordinary follow-up edits keep existing workbook context. After `check_workbook_request` is ready, save the local request JSON and use the approved bridge:
 
 ```powershell
 pwsh -NoProfile -File 'C:\path\to\Invoke-XF1Build.ps1' `
   -McpUrl 'https://xf1-mcp.vercel.app/api/mcp' `
-  -StartDate '2025-01-01' -LastActualDate '2026-08-31' `
-  -FinancialYearEndMonth 12 -Currency 'USD' -Months 48 `
-  -OutputPath 'C:\Models\My-XF1-Model.xlsx'
+  -RequestPath 'C:\Models\current-request.json'
 ```
 
 Dates must follow the builder's [calendar rules](../docs/runner.md). A new output filename is required. Only the existing runner constructs, calculates, verifies and saves Excel. The bridge returns JSON containing the pinned version, manifest hash, cache location, download status and the runner's build report. The workbook and its `.map.json`/`.build.json` remain on the laptop. The server receives no workbook configuration, path or workbook contents.
@@ -37,7 +37,7 @@ An unavailable MCP endpoint, missing approval, changed local bridge, mismatched 
 
 Suggested persistent project instruction for colleagues:
 
-> For every NEW XF1 workbook, call the XF1 MCP get_current_release tool, verify the approved local bridge, and invoke it with the actual production MCP URL and the user's configuration. Stop if current approval cannot be established. Reuse only the exact verified package version; keep it pinned throughout the build. Execute the packaged desktop Excel runner. Do not implement Excel construction yourself, upload workbooks, or migrate existing models.
+> For every NEW XF1 workbook, create a fresh request ID and start with empty inputs. Use only values explicitly supplied for this request, its numbered clarifications, or explicit reuse. Call check_workbook_request with presence/provenance metadata, ask ALL missing questions together as its numbered list, and bind numbered replies to that request. Collect all six required inputs; never silently default Months or infer reuse. Ordinary edits retain the existing workbook context. Once ready, save the local request JSON, call get_current_release, verify the approved bridge and invoke it with -McpUrl and -RequestPath. Stop if current approval cannot be established. Execute the packaged desktop Excel runner. Do not upload values, paths or workbooks, or migrate existing models.
 
 Codex is the tested execution environment. Claude compatibility is expected but not separately tested; the same package and bridge apply to all clients capable of local PowerShell execution.
 

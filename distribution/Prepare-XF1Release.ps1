@@ -48,7 +48,7 @@ $descriptor=[ordered]@{
     schemaVersion=1;approval='candidate';templateId=$manifest.templateId;version=$Version;generation='from-scratch';runner=$manifest.runner
     manifestSha256=(Get-FileHash -LiteralPath $manifestPath -Algorithm SHA256).Hash
     package=@{url=($base+"xf1-$Version.zip");sha256=(Get-FileHash -LiteralPath $archive -Algorithm SHA256).Hash;bytes=(Get-Item -LiteralPath $archive).Length}
-    bridge=@{version='1.0.0';url=($base+'Invoke-XF1Build.ps1');sha256=(Get-FileHash -LiteralPath $bridge -Algorithm SHA256).Hash}
+    bridge=@{version='1.1.0';url=($base+'Invoke-XF1Build.ps1');sha256=(Get-FileHash -LiteralPath $bridge -Algorithm SHA256).Hash}
     requirements=$manifest.requirements;testedClient='Codex';otherClients='Claude compatibility expected, not guaranteed or tested'
 }
 $descriptor | ConvertTo-Json -Depth 12 | Set-Content -LiteralPath (Join-Path $destination 'release-candidate.json') -Encoding utf8

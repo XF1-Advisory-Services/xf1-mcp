@@ -11,7 +11,7 @@ Use these anchors for new templates. Labels are in C, values in D, notes in E an
 | D9 | Timeline start | First day of the financial year |
 | D10 | Last actual date | Month-end between D9−1 and the final model date; D9−1 means no actual months |
 | D11 | Forecast start | `=D10+1` |
-| D12 | Horizon N | Whole months, at least 12; default 48 |
+| D12 | Horizon N | Whole months, at least 12; explicitly collected for every MCP build (direct development runner default: 48) |
 | D13 | Final model date | `=EOMONTH(D9,D12-1)` |
 | D14 | Financial year-end month | Integer 1–12; consistent with D9 |
 | D15 | Last actual month position H | Exact count of monthly end dates on/before D10; 0 through N |

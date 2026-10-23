@@ -9,7 +9,7 @@ export function validateRelease(release) {
       release.generation !== 'from-scratch' || release.runner !== 'runner/New-XF1Workbook.ps1' ||
       !hash.test(release.manifestSha256) || !hash.test(release.package?.sha256) ||
       !Number.isSafeInteger(release.package?.bytes) || release.package.bytes < 1 || release.package.bytes > 5_000_000 ||
-      release.bridge?.version !== '1.0.0' || !hash.test(release.bridge?.sha256)) {
+      !['1.0.0', '1.1.0'].includes(release.bridge?.version) || !hash.test(release.bridge?.sha256)) {
     throw new Error('Approved release metadata is invalid. Stop; do not use a cached release.');
   }
   const base = `https://github.com/${repository}/releases/download/v${release.version}/`;

@@ -1,5 +1,7 @@
 # Creating a new XF1 workbook
 
+For requests through XF1 MCP, first follow [fresh request collection](new-workbook-request.md). Every new file starts with empty inputs; all six required values, including Months, must be explicit. Ask all missing values together as numbered questions. The bridge accepts `-RequestPath`; the scalar invocation below is the direct development runner API, whose legacy defaults do not authorize assumptions in MCP requests. Ordinary follow-up edits do not use the new-workbook flow.
+
 The runner starts with an empty desktop Excel workbook and constructs Controls, Monthly, Quarterly, Annual, Input_sheet and Checks at the requested timeline length. It creates the formatting, calendars, flags, names, validations and views, then calculates and verifies the result. No existing `.xlsx` or workbook map is needed. It does not upgrade existing models, publish releases or add business calculations/checks.
 
 ## Requirements and invocation

@@ -6,7 +6,7 @@ The template task owns `docs/`, `runner/`, the development manifest and builder 
 
 ## Current approval
 
-The deployed `/api/mcp` endpoint exposes one read-only tool, `get_current_release`, with an empty input object. A successful tool response contains the same JSON in `structuredContent` and its text content:
+The `/api/mcp` endpoint exposes two read-only tools. `check_workbook_request` accepts a fresh request ID, operation and field presence/provenance metadata (never values or paths), rejects stale provenance and returns all missing required inputs as numbered questions. It is stateless: numbered-answer mapping belongs to the client's pending request. `get_current_release` retains its empty input object for discovery/bridge compatibility. Its success does not certify input readiness. A successful release response contains the same JSON in `structuredContent` and its text content:
 
 ```json
 {
@@ -51,6 +51,8 @@ The package preserves builder manifest schema 2. Preparation copies and verifies
 The service validates the release identity and exact versioned GitHub asset URLs. The local bridge verifies its own expected version/hash, the downloaded ZIP hash/size, copied manifest hash, package identity, required runner files and every listed asset hash. It rejects unexpected files, duplicate paths, traversal and symbolic links/junctions. OneDrive placeholder reparse points are supported. HTTPS to the explicitly configured MCP endpoint is the approval trust boundary; hashes detect mismatches but are not a separate signature authority. Public downloads are intentional.
 
 ## Local lifecycle
+
+Bridge 1.1.0 replaces scalar build arguments with `-RequestPath`. See [request contract](../docs/new-workbook-request.md) for the local JSON schema and collection rules. It validates six explicit inputs and current-request provenance before network/cache/Excel work. Missing inputs are reported together in numbered order, with no implicit horizon. `-ValidateRequestOnly` is local-only validation; `-ResolveOnly` remains package discovery. Neither mode builds a workbook. Provenance remains a client assertion; the stateless service cannot verify conversation semantics or prevent a client falsely labelling copied values. Direct development runner calls retain their legacy API and are outside the MCP gate.
 
 The bridge negotiates MCP using the 2025-06-18 Streamable HTTP protocol with the pinned MCP adapter, sends initialized notification and calls the release tool. Every invocation performs this handshake/selection; there is no offline path. It accepts JSON and SSE-framed RPC responses. The server is stateless and needs no session store.
 

@@ -1,5 +1,7 @@
 # XF1 Excel templates
 
+Source now includes fresh-request collection for the pending 1.2.3 release: each NEW workbook starts with empty inputs, asks all missing inputs together as numbered questions, and uses bridge 1.1.0 with a local request file. See [request contract](docs/new-workbook-request.md). The published selection below remains unchanged until the new assets are published and the service is deployed.
+
 Published release: [1.2.2](https://github.com/XF1-Advisory-Services/xf1-mcp/releases/tag/v1.2.2). Public MCP endpoint: `https://xf1-mcp.vercel.app/api/mcp`. See [colleague setup](distribution/README.md).
 
 One project contains the template specifications, local builder, and MCP distribution implementation. It creates workbooks from scratch; existing Excel files are outputs, not dependencies. Nothing is automatically published when local files change.

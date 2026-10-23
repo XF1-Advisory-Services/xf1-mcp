@@ -2,22 +2,16 @@
 [CmdletBinding()]
 param(
     [Parameter(Mandatory)][uri]$McpUrl,
-    [string]$StartDate,
-    [string]$LastActualDate,
-    [int]$FinancialYearEndMonth,
-    [string]$Currency,
-    [string]$OutputPath,
-    [int]$Months = 48,
-    [string]$ActualLabel = 'A',
-    [string]$ForecastLabel = 'F',
+    [string]$RequestPath,
     [string]$CacheRoot = (Join-Path ([Environment]::GetFolderPath('LocalApplicationData')) 'XF1/releases'),
     [switch]$ResolveOnly,
+    [switch]$ValidateRequestOnly,
     # Test-only escape hatch: requires a loopback MCP endpoint. Never use for a remote service.
     [switch]$AllowLoopbackForTest
 )
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
-$bridgeVersion = '1.0.0'
+$bridgeVersion = '1.1.0'
 $templateId = 'xf1-base-six-sheet'
 $required = @('runner/New-XF1Workbook.ps1','runner/Workbook.ps1','runner/Layout.ps1')
 
@@ -86,9 +80,50 @@ function Send-XF1Rpc($Body, $Headers) {
 if ($AllowLoopbackForTest -and -not $McpUrl.IsLoopback) { throw 'Test mode requires a loopback MCP URL.' }
 if ($McpUrl.Scheme -ne 'https' -and -not ($AllowLoopbackForTest -and $McpUrl.Scheme -eq 'http')) { throw 'MCP must use HTTPS.' }
 if ($McpUrl.UserInfo -or $McpUrl.Query -or $McpUrl.Fragment) { throw 'MCP URL must not contain credentials, query parameters or fragments.' }
+if ($ResolveOnly -and $ValidateRequestOnly) { throw 'Choose only one validation/resolution mode.' }
 if (-not $ResolveOnly) {
-    foreach ($value in @($StartDate,$LastActualDate,$Currency,$OutputPath)) { if ([string]::IsNullOrWhiteSpace($value)) { throw 'StartDate, LastActualDate, Currency and OutputPath are required for a build.' } }
+    if ([string]::IsNullOrWhiteSpace($RequestPath)) { throw 'A fresh -RequestPath JSON file is required for each NEW workbook request. Collect all six inputs; never reuse earlier assumptions implicitly.' }
+    $request = Get-Content -Raw -LiteralPath $RequestPath | ConvertFrom-Json -AsHashtable
+    if ($request.schemaVersion -ne 1 -or $request.requestId -isnot [string] -or [string]::IsNullOrWhiteSpace($request.requestId) -or $request.inputs -isnot [System.Collections.IDictionary]) { throw 'Invalid request: schemaVersion 1, a fresh requestId and inputs object are required.' }
+    $questions = [ordered]@{
+        StartDate='What is the model start date (YYYY-MM-DD, first day of its financial year)?'
+        LastActualDate='What is the last actuals date (YYYY-MM-DD, month end; for no actuals use the day before the start date)?'
+        FinancialYearEndMonth='Which month ends the financial year (1-12)?'
+        Currency='Which currency should this workbook use (for example USD or EUR)?'
+        Months='How many months should this workbook cover (at least 12)?'
+        OutputPath="What is the new workbook's full Windows output path, including its .xlsx filename?"
+    }
+    $missing = @(); $values = @{}
+    foreach ($field in $request.inputs.Keys) {
+        if ($field -cnotin @($questions.Keys)+@('ActualLabel','ForecastLabel')) { throw "Unknown request field: $field" }
+        $entry = $request.inputs[$field]
+        if ($entry -isnot [System.Collections.IDictionary] -or $entry.requestId -cne $request.requestId -or $entry.source -cnotin @('current_request','clarification','explicit_reuse')) { throw "Invalid or stale provenance for $field. Only current-request inputs, its clarifications or explicit reuse are allowed." }
+        if ($entry.Contains('value') -and $null -ne $entry.value -and -not [string]::IsNullOrWhiteSpace([string]$entry.value)) { $values[$field]=$entry.value }
+    }
+    foreach ($field in $questions.Keys) { if (-not $values.ContainsKey($field)) { $missing += $field } }
+    if ($missing.Count) {
+        $lines = for ($index=0; $index -lt $missing.Count; $index++) { '{0}. {1}' -f ($index+1),$questions[$missing[$index]] }
+        throw ("Missing inputs for request $($request.requestId). Ask all together:`n"+($lines -join "`n"))
+    }
+    foreach ($field in @('StartDate','LastActualDate','Currency','OutputPath')) { if ($values[$field] -isnot [string]) { throw "$field must be text." } }
+    foreach ($field in @('Months','FinancialYearEndMonth')) { if ($values[$field] -isnot [long] -and $values[$field] -isnot [int]) { throw "$field must be an integer." } }
+    $StartDate=$values.StartDate; $LastActualDate=$values.LastActualDate
+    $FinancialYearEndMonth=$values.FinancialYearEndMonth; $Currency=$values.Currency
+    $OutputPath=$values.OutputPath; $Months=$values.Months
+    $ActualLabel='A'; $ForecastLabel='F'
+    if ($values.ContainsKey('ActualLabel')) { $ActualLabel=$values.ActualLabel }
+    if ($values.ContainsKey('ForecastLabel')) { $ForecastLabel=$values.ForecastLabel }
+    foreach ($label in @($Currency,$ActualLabel,$ForecastLabel)) { if ($label -isnot [string] -or [string]::IsNullOrWhiteSpace($label) -or $label.Length -gt 64) { throw 'Currency and period labels must contain 1-64 characters.' } }
+    if ($ActualLabel -eq $ForecastLabel) { throw 'Actual and forecast labels must be distinct.' }
     if ($FinancialYearEndMonth -lt 1 -or $FinancialYearEndMonth -gt 12) { throw 'FinancialYearEndMonth must be 1-12.' }
+    if ($Months -lt 12 -or $Months -gt 16358) { throw 'Months must be 12-16358; no horizon default is used by the bridge.' }
+    $start=[datetime]::ParseExact($StartDate,'yyyy-MM-dd',[cultureinfo]::InvariantCulture)
+    $actual=[datetime]::ParseExact($LastActualDate,'yyyy-MM-dd',[cultureinfo]::InvariantCulture)
+    if ($start.Year -lt 1901 -or $start.Day -ne 1 -or $start.Month -ne (($FinancialYearEndMonth % 12)+1)) { throw 'StartDate must be the first day of the financial year, from 1901.' }
+    $end=$start.AddMonths($Months).AddDays(-1)
+    if ($actual -lt $start.AddDays(-1) -or $actual -gt $end -or $actual.Day -ne [datetime]::DaysInMonth($actual.Year,$actual.Month)) { throw 'LastActualDate must be a month end within the horizon or the day before StartDate.' }
+    if (-not [IO.Path]::IsPathFullyQualified($OutputPath) -or [IO.Path]::GetExtension($OutputPath) -ine '.xlsx') { throw 'OutputPath must be a full path with an .xlsx filename.' }
+    if ($ValidateRequestOnly) { @{requestId=$request.requestId;ready=$true;requiredFields=@($questions.Keys)} | ConvertTo-Json; return }
     if (-not $IsWindows -or $null -eq [type]::GetTypeFromProgID('Excel.Application')) { throw 'This build requires Windows and installed desktop Microsoft Excel.' }
 }
 
@@ -169,6 +204,7 @@ try {
         $arguments = @{StartDate=$StartDate;LastActualDate=$LastActualDate;FinancialYearEndMonth=$FinancialYearEndMonth;Currency=$Currency;OutputPath=$OutputPath;Months=$Months;ActualLabel=$ActualLabel;ForecastLabel=$ForecastLabel;ManifestPath=(Join-Path $packageDirectory 'release-manifest.json')}
         $raw = & (Join-Path $packageDirectory $release.runner) @arguments
         $summary.build = ($raw -join [Environment]::NewLine) | ConvertFrom-Json -AsHashtable
+        $summary.requestId = $request.requestId
     }
     $summary | ConvertTo-Json -Depth 20
 } finally {
