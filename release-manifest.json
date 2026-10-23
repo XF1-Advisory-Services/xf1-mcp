@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "templateId": "xf1-base-six-sheet",
-  "version": "1.2.1-dev.1",
+  "version": "1.2.1-dev.2",
   "status": "development",
   "runner": "runner/New-XF1Workbook.ps1",
   "requirements": {
@@ -54,11 +54,11 @@
     },
     {
       "path": "docs/shared-guidance.md",
-      "sha256": "3BA01FE706DC77AC15B7411B05B591B2FC3CF91D99E366BD3A9F2066480FB4DE"
+      "sha256": "52D58F1639111A41498861F8A8E86DBC454A911502FED4A2BBB5BFB6232B418A"
     },
     {
       "path": "runner/Layout.ps1",
-      "sha256": "C2EA50FB7B22E49D99E645E54BE2D010F10EE1C4EE5B38678B08138FB00B63AB"
+      "sha256": "9F5D4A60CC37AADFA71AA6211E4B616D9AF40C4E1A38AE48D395F6AC3E181FE2"
     },
     {
       "path": "runner/New-XF1Workbook.ps1",
@@ -66,7 +66,7 @@
     },
     {
       "path": "runner/Workbook.ps1",
-      "sha256": "3A8DF3DC8FDDFE84BDB15BCB3190D8BFA0741B0B5807737C4B465D8B430D5C30"
+      "sha256": "7A3388C95FE39E96B6A0618544B4244FA31DE720CA95922C0866BB07D2F97A6E"
     }
   ],
   "generation": "from-scratch"
