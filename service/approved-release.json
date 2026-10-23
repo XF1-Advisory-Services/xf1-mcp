@@ -3,19 +3,19 @@
     "schemaVersion": 1,
     "approval": "approved",
     "templateId": "xf1-base-six-sheet",
-    "version": "1.2.1",
+    "version": "1.2.2",
     "generation": "from-scratch",
     "runner": "runner/New-XF1Workbook.ps1",
-    "manifestSha256": "726F4903085CB44EAE5C5345AA607F159D459E5229D9981DF10B0694FC6AF23D",
+    "manifestSha256": "8B84D514EE1C71D8D2FA3D50C404489AD47E1BDCAE6F627F8B91310AF9B34C9D",
     "package": {
-      "bytes": 32224,
-      "sha256": "9C4C97063E5ABC9D5E61749F6AF8111D124F35DA20B069CA59DE7A61672132B6",
-      "url": "https://github.com/XF1-Advisory-Services/xf1-mcp/releases/download/v1.2.1/xf1-1.2.1.zip"
+      "bytes": 32222,
+      "url": "https://github.com/XF1-Advisory-Services/xf1-mcp/releases/download/v1.2.2/xf1-1.2.2.zip",
+      "sha256": "2D0A74C42DC19ECF0C0BB2032DE681DE9A7E3C77AF172EBE444233C5C2BFABC8"
     },
     "bridge": {
+      "url": "https://github.com/XF1-Advisory-Services/xf1-mcp/releases/download/v1.2.2/Invoke-XF1Build.ps1",
       "version": "1.0.0",
-      "sha256": "9CAD1548E5C278E4A89E598B2A8793D2EC6CB94715AF9C061632EE9D30BE7614",
-      "url": "https://github.com/XF1-Advisory-Services/xf1-mcp/releases/download/v1.2.1/Invoke-XF1Build.ps1"
+      "sha256": "9CAD1548E5C278E4A89E598B2A8793D2EC6CB94715AF9C061632EE9D30BE7614"
     },
     "requirements": {
       "os": "Windows",
