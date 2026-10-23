@@ -8,7 +8,7 @@ function Assert-XF1Equal($Actual,$Expected,[string]$Label) {
     if ($Actual -cne $Expected) { throw "$Label expected [$Expected], got [$Actual]" }
 }
 function Assert-XF1FontName($Actual,[string]$Label) {
-    if ($Actual -ine 'Verdana') { throw "$Label expected [Verdana], got [$Actual]" }
+    if ($Actual -ine 'Roboto') { throw "$Label expected [Roboto], got [$Actual]" }
 }
 function Assert-XF1Base($Book,$Map,$Manifest) {
     $names = @($Book.Worksheets | ForEach-Object { $_.Name })
