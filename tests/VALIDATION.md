@@ -1,3 +1,11 @@
+# Font update — 23 October 2026
+
+Development package `1.2.1-dev.2` sets the workbook Normal style and six-sheet body/header formatting to Roboto 10. The existing case-insensitive font-name check is retained and its test now uses Roboto. Documentation and development asset hashes match.
+
+A fresh 24-month native Excel build passed runtime verification with zero formula errors. Independent inspection of saved `xl/styles.xml` confirmed Roboto 10 for the Normal style and all seven referenced cell fonts. Evidence: `.build/roboto-dev2/font-check.build.json` and its workbook. Roboto was not found in the local installed-font collection or Windows font registrations, so exact Roboto rendering and text fit remain unverified on this laptop. No published release or existing template workbook was changed.
+
+The following record describes the earlier validation baseline.
+
 # From-scratch builder verification — 23 September 2026
 
 Package: `1.2.0-dev.3`, development only. Native desktop Excel through Codex; no release published. Runner arguments and manifest schema are unchanged.

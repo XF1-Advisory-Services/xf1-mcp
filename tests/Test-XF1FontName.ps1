@@ -1,7 +1,7 @@
 #requires -Version 7.0
 $ErrorActionPreference = 'Stop'
 . (Join-Path (Split-Path $PSScriptRoot -Parent) 'runner/Workbook.ps1')
-foreach ($returnedName in @('Verdana', 'verdana', 'VERDANA')) {
+foreach ($returnedName in @('Roboto', 'roboto', 'ROBOTO')) {
     Assert-XF1FontName $returnedName 'Font name'
 }
 $rejected = $false
