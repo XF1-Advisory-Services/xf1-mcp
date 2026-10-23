@@ -54,7 +54,7 @@ Repeated formulas must copy correctly across periods and down equivalent detail 
 
 ## Shared formatting
 
-Font: Verdana 10. Standard body row height: 18 points; increase only when content needs additional lines. Labels left aligned, numeric outputs right aligned. No merged cells. Rows 1:5 have black fill and white text. Every sheet has `C2 =model.check.message`, white and bold; C1 and C3:C5 remain blank. This is the sole content exception to the blank Inputs header.
+Font: Roboto 10. Standard body row height: 18 points; increase only when content needs additional lines. Labels left aligned, numeric outputs right aligned. No merged cells. Rows 1:5 have black fill and white text. Every sheet has `C2 =model.check.message`, white and bold; C1 and C3:C5 remain blank. This is the sole content exception to the blank Inputs header.
 
 Sections have bold uppercase titles in A. Subsections have uppercase titles in B, leaving A blank/unfilled. Bands match the tab colour and extend through the last content/timeline column, excluding the right spacer. Leave one blank row before each title. Group detail under each subsection, or under a section with no subsections; include its total. Collapsed outlines leave one visible blank row between titles. Do not group section-level rows above the first subsection.
 
