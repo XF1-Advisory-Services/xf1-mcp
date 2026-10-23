@@ -1,3 +1,22 @@
+# Fresh-request release — 23 October 2026
+
+Release [v1.2.3](https://github.com/XF1-Advisory-Services/xf1-mcp/releases/tag/v1.2.3) is live with bridge 1.1.0. Each new workbook collects six explicit inputs under a fresh request ID. Ordinary edits retain existing context.
+
+- Immutable source/tag: `a14bd7dd83c709ab20322a925eca3146c0feaa43`.
+- Selector and production deployment commit: `13aba221f3346415abb3bb8d63ee764752a91be9`; its sole change is `service/approved-release.json`.
+- [Vercel deployment](https://vercel.com/xf-1-advisory/xf1-mcp/CGr7cxUE4Skg1fgRdeUBDTH2jj3c): Production, Ready, 9-second build.
+- Public MCP: `https://xf1-mcp.vercel.app/api/mcp`, verified selecting 1.2.3 and bridge 1.1.0.
+
+| Asset | SHA-256 |
+|---|---|
+| Package (34,478 bytes) | `6A5F0AFB622E7F46583A62225BC672E45EBE4D94EB991A367B35743228A1462F` |
+| Packaged manifest | `3A22459EB21EB1E56FB188B3842E7DD4A5ADF82DA2488FEBD0EC2C7F02D0A2AD` |
+| Bridge 1.1.0 | `D0FBE8BC29C838D53AD39E8E9A855437A94605D42DAAAD3C7D2DE3873CC1789D` |
+
+The prepublication suite passed all 34 test entries, including native Excel. Live verification confirmed tool discovery and instructions; six numbered missing inputs; complete and partial requests; a second empty request; rejection of stale provenance and stale explicit reuse; current-request clarification and explicit reuse; ordinary-edit handling; rejection of values sent to the metadata-only tool; and public asset hashes. The downloaded approved bridge built a six-sheet, 48-month workbook through the live endpoint with a fresh cache and zero formula errors. Bridge 1.0.0 stopped with the required upgrade to 1.1.0. Evidence is in `.build/live-publication-1.2.3/` in the isolated rollout checkout.
+
+Provenance is a client assertion, not proof of user intent or control over an agent's context. Clients caching tools/instructions may need to reconnect. Claude remains untested. Automatic deployment remains disabled. Published assets and the original development checkout were preserved. Earlier publication records follow.
+
 # Roboto release — 23 October 2026
 
 Vavrinec explicitly authorized publishing the Roboto 10 update and selecting it in the existing MCP service.

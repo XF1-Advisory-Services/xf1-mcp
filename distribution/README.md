@@ -1,8 +1,8 @@
 # XF1 local execution and MCP setup
 
-The request-file workflow below is the tested source for pending release 1.2.3 / bridge 1.1.0. It becomes available through MCP only after publication and deployment; the current published selection is recorded below. Always use the bridge version and hash returned by the live service.
+The request-file workflow below is live in release 1.2.3 / bridge 1.1.0. Always use the bridge version and hash returned by the live service. Clients with a cached tool catalogue may need to reconnect to discover `check_workbook_request` and the updated instructions.
 
-Release [1.2.2](https://github.com/XF1-Advisory-Services/xf1-mcp/releases/tag/v1.2.2) is published. The public MCP endpoint is `https://xf1-mcp.vercel.app/api/mcp`, deployed in the separate `xf1-mcp` Vercel project. The test dashboard remains a separate project.
+Release [1.2.3](https://github.com/XF1-Advisory-Services/xf1-mcp/releases/tag/v1.2.3) is published. The public MCP endpoint is `https://xf1-mcp.vercel.app/api/mcp`, deployed in the separate `xf1-mcp` Vercel project. The test dashboard remains a separate project.
 
 ## What colleagues need once
 
@@ -17,7 +17,7 @@ codex mcp list
 
 There are no login/token parameters. This command follows [official Codex MCP setup guidance](https://developers.openai.com/learn/docs-mcp); it was also checked against the installed `codex mcp add --help`. In an app-only setup, add the same Streamable HTTP URL through the client's MCP configuration. Client-specific UI setup has not been separately tested; the downloaded bridge has been checked against the live public endpoint.
 
-Ask Codex to call `get_current_release`, download its `release.bridge.url`, and verify the file's SHA-256 against `release.bridge.sha256` **before running it**. Save it in a versioned local folder, for example `%LOCALAPPDATA%\XF1\bridge\1.0.0\Invoke-XF1Build.ps1`. This initial script is the execution bridge: adding a remote MCP URL alone does not grant the server access to local Excel. Keep its path available to the local agent. If a later approved release requires a different bridge version or hash, download and verify that bridge before another build; do not overwrite a bridge being used by an active build.
+Ask Codex to call `get_current_release`, download its `release.bridge.url`, and verify the file's SHA-256 against `release.bridge.sha256` **before running it**. Save it in a versioned local folder, for example `%LOCALAPPDATA%\XF1\bridge\1.1.0\Invoke-XF1Build.ps1`. This initial script is the execution bridge: adding a remote MCP URL alone does not grant the server access to local Excel. Keep its path available to the local agent. If a later approved release requires a different bridge version or hash, download and verify that bridge before another build; do not overwrite a bridge being used by an active build.
 
 ## Each new workbook
 
